@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Jadwal Sholat Bekasi</title>
+  <style>
+    body{font-family:sans-serif;background:#f4f6fa;padding:20px;color:#222}
+    .card{max-width:400px;margin:auto;background:white;padding:20px;border-radius:12px;box-shadow:0 4px 10px rgba(0,0,0,0.08)}
+    h2{margin-top:0}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{padding:8px;text-align:left}
+    th{color:#555}
+    td.time{text-align:right;font-weight:600}
+    #error{color:red;margin-top:10px;}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Jadwal Sholat Bekasi</h2>
+    <div id="tanggal"></div>
+    <table id="jadwalTable">
+      <tr><th>Sholat</th><th>Waktu</th></tr>
+    </table>
+    <div id="error"></div>
+  </div>
+
+  <script>
+    async function loadJadwal(){
+      // API Aladhan stabil
+      const apiUrl = "https://api.aladhan.com/v1/timingsByCity?city=Bekasi&country=Indonesia&method=5";
+      try {
+        const res = await fetch(apiUrl);
+        if(!res.ok) throw new Error("API error");
+        const data = await res.json();
+        if (!data || !data.data) throw new Error("Data kosong");
+        const t = data.data.timings;
+        const tanggal = data.data.date.readable;
+        document.getElementById('tanggal').textContent = "Tanggal: " + tanggal;
+        const jTable = document.getElementById('jadwalTable');
+        jTable.innerHTML = `
+          <tr><th>Sholat</th><th>Waktu</th></tr>
+          <tr><td>Subuh</td><td class="time">${t.Fajr.slice(0,5)}</td></tr>
+          <tr><td>Dzuhur</td><td class="time">${t.Dhuhr.slice(0,5)}</td></tr>
+          <tr><td>Ashar</td><td class="time">${t.Asr.slice(0,5)}</td></tr>
+          <tr><td>Maghrib</td><td class="time">${t.Maghrib.slice(0,5)}</td></tr>
+          <tr><td>Isya</td><td class="time">${t.Isha.slice(0,5)}</td></tr>
+        `;
+      } catch(e){
+        document.getElementById('error').textContent = "Gagal ambil jadwal sholat.";
+      }
+    }
+    loadJadwal();
+  </script>
+</body>
+</html>
