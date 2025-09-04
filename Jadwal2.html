@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Jadwal Sholat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f7f9fc;
+      --card:#ffffff;
+      --accent:#0b63d1;
+      --muted:#6b7280;
+      --glass: rgba(11,99,209,0.06);
+    }
+    *{box-sizing:border-box;font-family:Roboto,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#eef3fb);color:#0f1724;padding:22px}
+    .container{max-width:720px;margin:0 auto}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    h1{font-size:1.25rem;margin:0}
+    .meta{color:var(--muted);font-size:0.95rem}
+    .card{background:var(--card);border-radius:12px;padding:18px;box-shadow:0 6px 18px rgba(15,23,36,0.06);margin-bottom:16px}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:12px 10px;text-align:left}
+    th{font-weight:700;color:var(--muted);font-size:0.95rem}
+    td.time{text-align:right;font-weight:700;font-size:1rem}
+    td .editable{display:inline-block;min-width:88px;text-align:right}
+    tr + tr{border-top:1px solid #f1f5f9}
+    .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    button{background:var(--accent);color:white;border:0;padding:10px 12px;border-radius:10px;cursor:pointer;box-shadow:0 4px 10px rgba(11,99,209,0.12)}
+    button.ghost{background:transparent;color:var(--accent);box-shadow:none;border:1px solid rgba(11,99,209,0.12)}
+    .note{font-size:0.9rem;color:var(--muted);margin-top:8px}
+    .countdown{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;background:var(--glass);margin-top:10px}
+    .next-prayer{font-weight:700}
+    @media (max-width:520px){
+      th,td{padding:10px 6px}
+      .editable{min-width:64px}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>Jadwal Sholat</h1>
+        <div class="meta" id="currentDate">Tanggal: --</div>
+      </div>
+      <div class="meta" id="locationLabel">Lokasi: Lokal</div>
+    </header>
+
+    <section class="card" aria-labelledby="jadwal">
+      <table aria-label="Jadwal sholat">
+        <thead>
+          <tr>
+            <th>Sholat</th>
+            <th style="text-align:right">Waktu</th>
+          </tr>
+        </thead>
+        <tbody id="jadwalBody">
+          <!-- baris akan di-generate oleh JS -->
+        </tbody>
+      </table>
+
+      <div class="countdown" id="countdownBox" style="display:none">
+        <div>
+          <div style="color:var(--muted);font-size:0.9rem">Sholat berikutnya</div>
+          <div class="next-prayer" id="nextPrayerName">-</div>
+        </div>
+        <div style="margin-left:auto;text-align:right">
+          <div style="color:var(--muted);font-size:0.8rem">Waktu tersisa</div>
+          <div id="timeLeft" style="font-weight:700;font-size:1.05rem">--:--:--</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="saveBtn">Simpan</button>
+        <button class="ghost" id="resetBtn">Reset contoh</button>
+        <button class="ghost" id="setNowBtn" title="Isi waktu sholat dengan waktu sekarang (untuk testing)">Isi sekarang</button>
+      </div>
+
+      <div class="note">Klik waktu untuk mengubahnya (format HH:MM, 24-jam). Perubahan bisa disimpan agar tersimpan di browser (localStorage).</div>
+    </section>
+
+    <footer style="text-align:center;color:var(--muted);font-size:0.9rem">
+      Dibuat otomatis — ubah sesuai kebutuhan.
+    </footer>
+  </div>
+
+  <script>
+    // Nama sholat urutan umum
+    const defaultSchedule = [
+      {name: "Subuh", time: "04:20"},
+      {name: "Dzuhur", time: "12:05"},
+      {name: "Ashar", time: "15:18"},
+      {name: "Maghrib", time: "17:45"},
+      {name: "Isya", time: "19:00"}
+    ];
+
+    // Utility: pad number 2 digits
+    function pad(n){ return n.toString().padStart(2,'0'); }
+
+    // Tampilkan tanggal sekarang (format: 4 September 2025)
+    function formatFullDate(d){
+      const months = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+      return d.getDate() + " " + months[d.getMonth()] + " " + d.getFullYear();
+    }
+
+    // Ambil jadwal dari localStorage kalau ada, atau pakai default contoh
+    function loadSchedule(){
+      try {
+        const raw = localStorage.getItem("jadwalSholat_v1");
+        if(raw){
+          const parsed = JSON.parse(raw);
+          // validasi sederhana
+          if(Array.isArray(parsed) && parsed.length) return parsed;
+        }
+      } catch(e){}
+      return defaultSchedule.slice();
+    }
+
+    function saveSchedule(arr){
+      localStorage.setItem("jadwalSholat_v1", JSON.stringify(arr));
+      showToast("Tersimpan ke browser");
+    }
+
+    function resetToDefault(){
+      localStorage.removeItem("jadwalSholat_v1");
+      schedule = defaultSchedule.slice();
+      renderTable();
+      computeNextPrayer();
+      showToast("Di-reset ke contoh default");
+    }
+
+    // Simple toast (bisa diganti)
+    function showToast(text){
+      const t = document.createElement("div");
+      t.textContent = text;
+      Object.assign(t.style,{position:"fixed",right:"18px",bottom:"18px",background:"rgba(15,23,36,0.9)",color:"#fff",padding:"10px 14px",borderRadius:"8px",zIndex:9999});
+      document.body.appendChild(t);
+      setTimeout(()=> t.style.opacity = "0.02",1800);
+      setTimeout(()=> t.remove(),2400);
+    }
+
+    // Render table rows
+    let schedule = loadSchedule();
+    const tbody = document.getElementById("jadwalBody");
+    function renderTable(){
+      tbody.innerHTML = "";
+      schedule.forEach((s, idx) => {
+        const tr = document.createElement("tr");
+        const tdName = document.createElement("td");
+        tdName.textContent = s.name;
+        const tdTime = document.createElement("td");
+        tdTime.className = "time";
+        // editable span
+        const span = document.createElement("span");
+        span.className = "editable";
+        span.contentEditable = "true";
+        span.spellcheck = false;
+        span.textContent = s.time;
+        // allow only HH:MM characters when typing
+        span.addEventListener("input", (e) => {
+          // remove unwanted chars
+          const cleaned = span.textContent.replace(/[^\d:]/g,"").slice(0,5);
+          span.textContent = cleaned;
+        });
+        // On blur, validate format HH:MM
+        span.addEventListener("blur", () => {
+          const v = span.textContent.trim();
+          if(!/^\d{1,2}:\d{2}$/.test(v)){
+            span.textContent = schedule[idx].time; // revert invalid
+            showToast("Format waktu harus HH:MM (24-jam)");
+            return;
+          }
+          // normalize: pad hour
+          const parts = v.split(":").map(x=>x.replace(/^0+/, "") || "0");
+          let h = parseInt(parts[0],10);
+          let m = parseInt(parts[1],10);
+          if(Number.isNaN(h) || Number.isNaN(m) || h<0 || h>23 || m<0 || m>59){
+            span.textContent = schedule[idx].time;
+            showToast("Waktu tidak valid");
+            return;
+          }
+          const normalized = pad(h) + ":" + pad(m);
+          span.textContent = normalized;
+          schedule[idx].time = normalized;
+          computeNextPrayer();
+        });
+        tdTime.appendChild(span);
+        tr.appendChild(tdName);
+        tr.appendChild(tdTime);
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Hitung berikutnya dan update countdown
+    let countdownTimer = null;
+    function parseTimeToDate(timeStr, baseDate){
+      const [hh, mm] = timeStr.split(":").map(x=>parseInt(x,10));
+      const d = new Date(baseDate);
+      d.setHours(hh, mm, 0, 0);
+      return d;
+    }
+
+    function computeNextPrayer(){
+      const now = new Date();
+      document.getElementById("currentDate").textContent = "Tanggal: " + formatFullDate(now);
+      // build list of today's prayer times as Date
+      const timesToday = schedule.map(s => ({name:s.name, date: parseTimeToDate(s.time, now)}));
+      // if a time is earlier than now, it's possibly tomorrow: consider both today and tomorrow
+      let future = timesToday.filter(t => t.date.getTime() > now.getTime());
+      if(future.length === 0){
+        // no more today -> next is first prayer tomorrow
+        const firstTomorrow = parseTimeToDate(schedule[0].time, new Date(now.getTime() + 24*3600*1000));
+        future = [{name: schedule[0].name, date: firstTomorrow}];
+      }
+      // pick nearest
+      future.sort((a,b)=>a.date - b.date);
+      const next = future[0];
+      if(next){
+        document.getElementById("countdownBox").style.display = "flex";
+        document.getElementById("nextPrayerName").textContent = next.name + " — " + pad(next.date.getHours()) + ":" + pad(next.date.getMinutes());
+        // start countdown
+        if(countdownTimer) clearInterval(countdownTimer);
+        function updateLeft(){
+          const now2 = new Date();
+          let diff = Math.floor((next.date.getTime() - now2.getTime())/1000);
+          if(diff < 0){
+            // recompute if passed
+            computeNextPrayer();
+            return;
+          }
+          const h = Math.floor(diff/3600); diff %= 3600;
+          const m = Math.floor(diff/60); const s = diff%60;
+          document.getElementById("timeLeft").textContent = pad(h) + ":" + pad(m) + ":" + pad(s);
+        }
+        updateLeft();
+        countdownTimer = setInterval(updateLeft, 1000);
+      } else {
+        document.getElementById("countdownBox").style.display = "none";
+      }
+    }
+
+    // Buttons
+    document.getElementById("saveBtn").addEventListener("click", ()=> {
+      // ensure current contenteditable values are stored
+      const spans = tbody.querySelectorAll(".editable");
+      spans.forEach((sp,i)=> schedule[i].time = sp.textContent.trim());
+      saveSchedule(schedule);
+    });
+
+    document.getElementById("resetBtn").addEventListener("click", ()=> {
+      if(confirm("Reset jadwal ke contoh default?")) resetToDefault();
+    });
+
+    // Isi sekarang (untuk testing cepat) -> set semua waktu ke jam:menit sekarang
+    document.getElementById("setNowBtn").addEventListener("click", ()=>{
+      const now = new Date();
+      const hhmm = pad(now.getHours()) + ":" + pad(now.getMinutes());
+      schedule = schedule.map(s => ({...s, time: hhmm}));
+      renderTable();
+      computeNextPrayer();
+      showToast("Semua waktu diisi " + hhmm);
+    });
+
+    // Inisialisasi
+    renderTable();
+    computeNextPrayer();
+    // update countdown setiap kali jam berubah (cek per menit juga)
+    setInterval(computeNextPrayer, 60*1000);
+
+    // Optional: if user wants to change lokasi label
+    // document.getElementById("locationLabel").textContent = "Lokasi: Jakarta";
+
+  </script>
+</body>
+</html>
