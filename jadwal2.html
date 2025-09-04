@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Jadwal Sholat</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #dff1ff, #ffffff);
+      padding: 20px;
+      color: #222;
+    }
+    .card {
+      max-width: 420px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 14px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin-top: 0;
+      text-align: center;
+      color: #2b6cb0;
+    }
+    #tanggal {
+      text-align: center;
+      margin-bottom: 12px;
+      font-weight: bold;
+    }
+    select {
+      display: block;
+      margin: 0 auto 15px auto;
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    th {
+      color: #555;
+    }
+    td.time {
+      text-align: right;
+      font-weight: bold;
+      color: #2b6cb0;
+    }
+    tr:nth-child(even) {
+      background: #f9fcff;
+    }
+    #error {
+      color: red;
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Jadwal Sholat</h2>
+    <select id="kota">
+      <option value="Bekasi" selected>Bekasi</option>
+      <option value="Jakarta">Jakarta</option>
+      <option value="Bandung">Bandung</option>
+      <option value="Surabaya">Surabaya</option>
+      <option value="Medan">Medan</option>
+      <option value="Semarang">Semarang</option>
+      <option value="Yogyakarta">Yogyakarta</option>
+    </select>
+    <div id="tanggal"></div>
+    <table id="jadwalTable">
+      <tr><th>Sholat</th><th>Waktu</th></tr>
+    </table>
+    <div id="error"></div>
+  </div>
+
+  <script>
+    async function loadJadwal(kota){
+      const apiUrl = `https://api.aladhan.com/v1/timingsByCity?city=${kota}&country=Indonesia&method=5`;
+      try {
+        const res = await fetch(apiUrl);
+        if(!res.ok) throw new Error("API error");
+        const data = await res.json();
+        if (!data || !data.data) throw new Error("Data kosong");
+        const t = data.data.timings;
+        const tanggal = data.data.date.readable;
+        document.getElementById('tanggal').textContent = "Tanggal: " + tanggal;
+        const jTable = document.getElementById('jadwalTable');
+        jTable.innerHTML = `
+          <tr><th>Sholat</th><th>Waktu</th></tr>
+          <tr><td>Subuh</td><td class="time">${t.Fajr.slice(0,5)}</td></tr>
+          <tr><td>Dzuhur</td><td class="time">${t.Dhuhr.slice(0,5)}</td></tr>
+          <tr><td>Ashar</td><td class="time">${t.Asr.slice(0,5)}</td></tr>
+          <tr><td>Maghrib</td><td class="time">${t.Maghrib.slice(0,5)}</td></tr>
+          <tr><td>Isya</td><td class="time">${t.Isha.slice(0,5)}</td></tr>
+        `;
+        document.getElementById('error').textContent = "";
+      } catch(e){
+        document.getElementById('error').textContent = "Gagal ambil jadwal sholat.";
+      }
+    }
+
+    // Event pilih kota
+    document.getElementById('kota').addEventListener('change', e => {
+      loadJadwal(e.target.value);
+    });
+
+    // Load default (Bekasi)
+    loadJadwal("Bekasi");
+  </script>
+</body>
+</html>
