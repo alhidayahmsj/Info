@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Jadwal Sholat (Kemenag via API)</title>
+  <style>
+    body{font-family:sans-serif;background:#f4f6fa;padding:20px;color:#222}
+    .card{max-width:400px;margin:auto;background:white;padding:20px;border-radius:12px;box-shadow:0 4px 10px rgba(0,0,0,0.08)}
+    h2{margin-top:0}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{padding:8px;text-align:left}
+    th{color:#555}
+    td.time{text-align:right;font-weight:600}
+    #error{color:red;margin-top:10px;}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Jadwal Sholat Sekarang</h2>
+    <div id="lokasi">Mendeteksi lokasi…</div>
+    <div id="tanggal"></div>
+    <table id="jadwalTable">
+      <tr><th>Sholat</th><th>Waktu</th></tr>
+    </table>
+    <div id="error"></div>
+  </div>
+
+  <script>
+    async function fetchPrayer(lat, lon) {
+      const apiUrl = `https://waktu-sholat.vercel.app/prayer?latitude=${lat}&longitude=${lon}`;
+      const res = await fetch(apiUrl);
+      return res.ok ? await res.json() : null;
+    }
+
+    function pad(n){ return n.toString().padStart(2, '0'); }
+
+    navigator.geolocation.getCurrentPosition(async pos => {
+      const {latitude, longitude} = pos.coords;
+      document.getElementById('lokasi').textContent = `Lokasi: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
+      const data = await fetchPrayer(latitude, longitude);
+      if (!data || !data.data) {
+        document.getElementById('error').textContent = 'Gagal ambil jadwal.';
+        return;
+      }
+      const t = data.data;
+      document.getElementById('tanggal').textContent = `Tanggal: ${t.date}`;
+      const jTable = document.getElementById('jadwalTable');
+      jTable.innerHTML = `
+        <tr><th>Sholat</th><th>Waktu</th></tr>
+        <tr><td>Imsak</td><td class="time">${t.imsak}</td></tr>
+        <tr><td>Subuh</td><td class="time">${t.subuh}</td></tr>
+        <tr><td>Dzuhur</td><td class="time">${t.dzuhur}</td></tr>
+        <tr><td>Ashar</td><td class="time">${t.ashar}</td></tr>
+        <tr><td>Maghrib</td><td class="time">${t.maghrib}</td></tr>
+        <tr><td>Isya</td><td class="time">${t.isya}</td></tr>
+      `;
+    }, err => {
+      document.getElementById('error').textContent = 'Tidak bisa akses lokasi.';
+    });
+  </script>
+</body>
+</html>
