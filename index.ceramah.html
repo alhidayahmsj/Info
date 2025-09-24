@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>INFO MASJID AL HIDAYAH</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #146C1B;
+      color: #fff;
+      padding-bottom: 80px;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 15px;
+      background: #1A5917;
+      border-bottom: 2px solid rgba(255,255,255,.2);
+    }
+    header img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+    header h1 { font-size: 1.2rem; margin: 0; }
+    header p { margin: 2px 0 0; font-size: .85rem; color: #ddd; }
+
+    /* Menu */
+    nav { padding: 15px; }
+    nav ul { list-style: none; margin: 0; padding: 0; }
+    nav li { margin-bottom: 10px; position: relative; }
+    nav a {
+      display: block;
+      padding: 12px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: bold;
+      background: #338B2E;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,.3);
+    }
+    nav a:hover { background: #0D6309; }
+
+    .toggle {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .submenu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      margin-left: 20px;
+    }
+    .submenu a {
+      font-weight: normal;
+      background: #0E6F14;
+      border-radius: 10px;
+      font-size: .95rem;
+      margin-top: 5px;
+      display: block;
+      padding: 8px 12px;
+    }
+    .submenu.show { max-height: 2000px; }
+
+    /* Breaking News Popup */
+    #breaking-news {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2000;
+      display: none;
+      animation: popin 0.6s ease;
+    }
+    .news-slideshow {
+      position: relative;
+      width: 80vw;
+      max-width: 600px;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      border-radius: 10px;
+    }
+    .news-slideshow img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+      border-radius: 10px;
+    }
+    .news-slideshow img.active {
+      opacity: 1;
+      animation: zoomFade 0.8s ease;
+    }
+    #breaking-news button {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: red;
+      border: none;
+      color: #fff;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+    }
+    @keyframes popin {
+      from { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+      to   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    }
+    @keyframes zoomFade {
+      from { transform: scale(0.8); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+
+    /* Slideshow Biasa */
+    .slideshow {
+      width: 100%;
+      max-width: 1000px;
+      aspect-ratio: 16/9;
+      margin: 20px auto 60px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.4);
+      background: #000;
+    }
+    .slideshow img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .slideshow img.active { opacity: 1; }
+
+    /* Footer */
+    .credit {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      background: rgba(0,0,0,0.3);
+      padding: 8px 0;
+      font-size: 14px;
+      color: #ddd;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="logo.png" alt="Logo Masjid">
+    <div>
+      <h1>MASJID AL HIDAYAH</h1>
+      <p>Menyebarkan nilai-nilai Islam yang rahmatan lil a'lamin.</p>
+    </div>
+  </header>
+
+  <nav>
+    <ul>
+      <li>
+        <a href="#">Donasi</a>
+        <button class="toggle">▼</button>
+        <div class="submenu">
+          <a href="rek.jpeg" target="_blank">No. Rekening</a>
+          <a href="qris.jpeg" target="_blank">Qris</a>
+        </div>
+      </li>
+      <li>
+        <a href="#">Info & Kegiatan</a>
+        <button class="toggle">▼</button>
+        <div class="submenu">
+          <a href="Dkm.jpeg" target="_blank">Susunan Pengurus</a>
+          <a href="sejarah.html">Sejarah Masjid</a>
+          <a href="https://abadi.page.gd/jumat/kajian.mingguan.html">Jadwal Kajian</a>
+          <a href="https://abadi.page.gd/laporan.keuangan.php">Laporan Keuangan</a>
+          <a href="quran-id.html">Qur'an Digital</a>
+          <a href="https://abadi.page.gd/artikel/listartikel.php">Artikel</a>
+        </div>
+      </li>
+      <li><a href="https://www.youtube.com/@alhidayah.bukitkencana">Rekaman Kajian</a></li>
+      <li>
+        <a href="#">Belajar Bahasa Arab</a>
+        <button class="toggle">▼</button>
+        <div class="submenu">
+          <a href="https://ia601800.us.archive.org/14/items/eBook_Bhs_Arab_242/Panduan_Durusul_Lughah_al_Arabiyah_1.pdf">Durusul Lughah Jilid 1</a>
+          <a href="https://ia801206.us.archive.org/1/items/Kitab_Terjemahan/Panduan_Durusul_Lughah_al_Arabiyyah_4.pdf">Durusul Lughah Jilid 4</a>
+        </div>
+      </li>
+      <li>
+        <a href="#">Galeri Foto & Video</a>
+        <button class="toggle">▼</button>
+        <div class="submenu">
+          <a href="https://drive.google.com/drive/folders/1FCzaeXZ8eLlgArKoFJM2trA1L35Mar1G">Foto</a>
+          <a href="https://drive.google.com/drive/folders/1z1YnvwjZBNNIS2HYDSjhapydkBBqRzEt">Video</a>
+        </div>
+      </li>
+      <li>
+        <a href="#">Jadwal Sholat & Arah Kiblat</a>
+        <button class="toggle">▼</button>
+        <div class="submenu">
+          <a href="https://abadi.page.gd/jumat/list.php">Sholat Jumat</a>
+          <a href="jadwal2.html">Jadwal Sholat</a>
+          <a href="kiblat-online.html">Arah Kiblat</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Slideshow -->
+  <div class="slideshow">
+    <img src="masjid1.jpg" class="slide active">
+    <img src="masjid2.jpg" class="slide">
+    <img src="masjid3.jpg" class="slide">
+    <img src="masjid4.jpg" class="slide">
+    <img src="masjid5.jpg" class="slide">
+  </div>
+
+  <!-- Breaking News Popup -->
+  <div id="breaking-news">
+    <div class="news-slideshow">
+      <button onclick="closeNews()">×</button>
+      <img src="breaking1.png" class="active">
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="credit">
+    Created By : Team Multi Media <br> Masjid Al Hidayah
+  </div>
+
+  <script>
+    // Toggle menu
+    document.querySelectorAll(".toggle").forEach(btn => {
+      btn.addEventListener("click", function() {
+        const submenu = this.nextElementSibling;
+        document.querySelectorAll(".submenu").forEach(s => {
+          if (s !== submenu) s.classList.remove("show");
+        });
+        document.querySelectorAll(".toggle").forEach(b => {
+          if (b !== this) b.textContent = "▼";
+        });
+        submenu.classList.toggle("show");
+        this.textContent = submenu.classList.contains("show") ? "▲" : "▼";
+      });
+    });
+
+    // Slideshow utama
+    const slides = document.querySelectorAll(".slideshow .slide");
+    let index = 0;
+    setInterval(() => {
+      slides[index].classList.remove("active");
+      index = (index + 1) % slides.length;
+      slides[index].classList.add("active");
+    }, 3000);
+
+    // Breaking news popup
+    const newsPopup = document.getElementById("breaking-news");
+    const newsSlides = document.querySelectorAll(".news-slideshow img");
+    let newsIndex = 0;
+
+    function showNews() { newsPopup.style.display = "block"; }
+    function closeNews() { newsPopup.style.display = "none"; }
+
+    setInterval(() => {
+      newsSlides[newsIndex].classList.remove("active");
+      newsIndex = (newsIndex + 1) % newsSlides.length;
+      newsSlides[newsIndex].classList.add("active");
+    }, 4000);
+
+    window.onload = () => { setTimeout(showNews, 2000); };
+  </script>
+</body>
+</html>
