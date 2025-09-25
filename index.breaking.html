@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>INFO MASJID AL HIDAYAH </title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #146C1B; /* Hijau Tua */
+      color: #fff;
+      padding-bottom: 60px; /* beri ruang supaya scroll tidak ketutup footer */
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 15px;
+      background: #1A5917;
+      border-bottom: 2px solid rgba(255,255,255,.2);
+    }
+    header img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+    header div {
+      display: flex;
+      flex-direction: column;
+    }
+    header h1 {
+      font-size: 1.2rem;
+      margin: 0;
+    }
+    header p {
+      margin: 2px 0 0;
+      font-size: 0.85rem;
+      line-height: 1.3;
+      color: #ddd;
+    }
+
+    /* Menu */
+    nav {
+      padding: 15px;
+    }
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    nav li {
+      margin-bottom: 10px;
+      position: relative;
+    }
+    nav a {
+      display: block;
+      padding: 12px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: bold;
+      background: #338B2E;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,.3);
+    }
+    nav a:hover {
+      background: #0D6309;
+    }
+
+    .toggle {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .submenu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      margin-left: 20px;
+    }
+    .submenu a {
+      font-weight: normal;
+      background: #0E6F14;
+      border-radius: 10px;
+      font-size: .95rem;
+      margin-top: 5px;
+    }
+    .submenu.show {
+      max-height: 500px;
+    }
+
+    /* Scroll box */
+    .scroll-container {
+      width: 90%;
+      height: 250px;
+      overflow: hidden;
+      background: #146C1B;
+      margin: 20px auto;
+      border-radius: 10px;
+      position: relative;
+    }
+    .scroll-text {
+      display: block;
+      animation: scroll-up 15s linear infinite;
+    }
+    .scroll-text p {
+      margin: 20px 0;
+      text-align: center;
+      font-size: 16px;
+      padding: 0 10px;
+    }
+    @keyframes scroll-up {
+      0%   { transform: translateY(100%); }
+      100% { transform: translateY(-100%); }
+    }
+
+    /* Breaking News di tengah */
+    .breaking-news {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #c0392b;
+      color: #fff;
+      padding: 16px 24px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 12px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      min-width: 300px;
+      max-width: 90%;
+      z-index: 2000;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      animation: fadeInScale 0.6s ease;
+    }
+    .breaking-news button {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+      to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+
+    /* Sticky footer */
+    .credit {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      background: rgba(0,0,0,0.3); /* transparan biar elegan */
+      padding: 8px 0;
+      font-size: 14px;
+      color: #ddd;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="logo.png" alt="Logo Masjid">
+    <div>
+      <h1>MASJID AL HIDAYAH</h1>
+      <p>Menyebarkan nilai-nilai Islam yang rahmatan lil a'lamin melalui dakwah yang bijak, santun, dan sesuai dengan Al-Qur’an dan Sunnah.</p>
+    </div>
+  </header>
+
+  <nav>
+    <ul>
+      <li>
+        <a href="#">Donasi</a>
+        <button class="toggle">▼</button>
+        <div class="submenu">
+          <a href="rek.jpeg" target="_blank">No. Rekening</a>
+          <a href="qris.jpeg" target="_blank">Qris</a>
+        </div>
+      </li>
+      <li>
+        <a href="#">Info & Kegiatan</a>
+        <button class="toggle">▼</button>
+        <div class="submenu">
+          <a href="Dkm.jpeg" target="_blank">Susunan Pengurus</a>        
+          <a href="sejarah.html">Sejarah Masjid</a>
+          <a href="https://abadi.page.gd/jumat/kajian.mingguan.html ">Jadwal Kajian</a> 
+          <a href="https://abadi.page.gd/laporan.keuangan.php">Laporan Keuangan</a>
+          <a href="quran-id.html">Qur'an Digital</a>
+          <a href="https://abadi.page.gd/artikel/listartikel.php">Artikel</a>
+        </div>
+      </li>
+      <li><a href="https://www.youtube.com/@alhidayah.bukitkencana">Rekaman Kajian</a></li>
+      <li>
+        <a href="#">Belajar Bahasa Arab</a>
+        <button class="toggle">▼</button>
+        <div class="submenu">
+          <a href="https://ia601800.us.archive.org/14/items/eBook_Bhs_Arab_242/Panduan_Durusul_Lughah_al_Arabiyah_1.pdf">Durusul Lughah Jilid 1 / Ummu Abdillah</a>
+          <a href="https://ia801206.us.archive.org/1/items/Kitab_Terjemahan/Panduan_Durusul_Lughah_al_Arabiyyah_4.pdf">Durusul Lughah Jilid 4 / Ummu Abdillah</a>
+        </div>
+      </li>
+      <li><a href="https://alhidayahmsj.github.io/Live.masjidilharam/">Live Mekkah - Madinah</a></li>
+      <li>
+        <a href="#">Galeri Foto & Video</a>
+        <button class="toggle">▼</button>
+        <div class="submenu">    
+          <a href="https://drive.google.com/drive/folders/1FCzaeXZ8eLlgArKoFJM2trA1L35Mar1G">Foto</a>
+          <a href="https://drive.google.com/drive/folders/1z1YnvwjZBNNIS2HYDSjhapydkBBqRzEt">Video</a>
+        </div>
+      </li>
+      <li>
+        <a href="#">Jadwal Sholat & Arah Kiblat</a>
+        <button class="toggle">▼</button>
+        <div class="submenu">    
+          <a href="https://abadi.page.gd/jumat/list.php">Sholat Jumat</a>
+          <a href="jadwal2.html">Jadwal Sholat</a>
+          <a href="kiblat-online.html">Arah Kiblat</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Scroll -->
+  <div class="scroll-container">
+    <div class="scroll-text">
+      <p>Wahai Dzat yang membolak-balikkan hati, teguhkanlah hatiku di atas agama-Mu.</p>
+      <p>Ya Rabb kami, janganlah Engkau condongkan hati kami kepada kesesatan</p>
+      <p>“Sebaik-baik kalian adalah yang belajar Al-Qur’an dan mengajarkannya.”</p>
+      <p>Ya Rabb kami, berikanlah kepada kami kebaikan di dunia dan kebaikan di akhirat, dan
+ peliharalah kami dari siksa neraka.” (QS. Al-Baqarah: 201)</p>
+      <p>Ya Tuhanku, sayangilah kedua orang tuaku sebagaimana mereka telah mendidikku sejak kecil. (QS. Al-Isra’: 24)</p>
+      <p>Dengan nama-Mu ya Allah aku mati (tidur) dan aku hidup (bangun) (HR. Bukhari no. 6324)</p>
+      <p>“Segala puji bagi Allah yang telah menghidupkan kami setelah mematikan kami, dan hanya kepada-Nya lah kami kembali. (HR. Bukhari no. 6312)</p>
+    </div>
+  </div>
+
+  <!-- Breaking News -->
+  <div id="breakingNews" class="breaking-news">
+    <span></span>
+    <button id="closeBreaking">✖</button>
+  </div>
+
+  <!-- Sticky Footer -->
+  <div class="credit">
+    Created By : Team Multi Media <br>
+    Masjid Al Hidayah
+  </div>
+
+  <script>
+    // Toggle menu
+    document.querySelectorAll(".toggle").forEach(btn => {
+      btn.addEventListener("click", function() {
+        const submenu = this.nextElementSibling;
+        document.querySelectorAll(".submenu").forEach(s => {
+          if (s !== submenu) s.classList.remove("show");
+        });
+        document.querySelectorAll(".toggle").forEach(b => {
+          if (b !== this) b.textContent = "▼";
+        });
+        submenu.classList.toggle("show");
+        this.textContent = submenu.classList.contains("show") ? "▲" : "▼";
+      });
+    });
+
+    // Breaking News dari InfinityFree
+    const breakingNews = document.getElementById("breakingNews");
+    const closeBtn = document.getElementById("closeBreaking");
+
+    fetch("https://abadi.page.gd/breaking.json")
+      .then(r => r.json())
+      .then(data => {
+        const deadline = new Date(data.deadline).getTime();
+        const now = new Date().getTime();
+        if (now < deadline) {
+          breakingNews.querySelector("span").textContent = data.text;
+          breakingNews.style.display = "flex";
+          setTimeout(() => breakingNews.style.display = "none", 8000);
+          closeBtn.addEventListener("click", () => breakingNews.style.display = "none");
+        }
+      })
+      .catch(err => console.error("Gagal ambil breaking news:", err));
+  </script>
+</body>
+</html>
