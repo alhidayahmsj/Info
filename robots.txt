@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://alhidayahmsj.github.io/info/sitemap.xml
