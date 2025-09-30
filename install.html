@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Install Info Masjid</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0d6efd">
+  <link rel="icon" href="icon-192.png">
+</head>
+<body>
+  <h1>Info Masjid</h1>
+  <p>Silakan pasang aplikasi ini ke layar utama agar lebih mudah diakses.</p>
+  <button id="installBtn" style="padding:10px 20px; font-size:16px;">📲 Pasang Aplikasi</button>
+  
+
+  <script>
+    let deferredPrompt;
+    const installBtn = document.getElementById("installBtn");
+    installBtn.style.display = "none";
+
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = "inline-block";
+    });
+
+    installBtn.addEventListener("click", async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === "accepted") {
+          window.location.href = "index.html"; // setelah install buka web utama
+        }
+        deferredPrompt = null;
+      }
+    });
+
+    // Daftarkan service worker
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
+  </script>
+</body>
+</html>
