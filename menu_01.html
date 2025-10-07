@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Masjid Al Hidayah - Menu Aplikasi</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #064e3b, #16a34a); /* hijau tua → hijau muda */
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 450px;
+      background-color: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+      padding: 20px;
+      box-sizing: border-box;
+      border-radius: 14px;
+    }
+
+    /* --- Header --- */
+    .header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .title-box {
+      border: 2px solid #d4af37; /* emas */
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      width: 100%;               /* full sejajar menu */
+      margin: 0 auto 12px auto;
+      background: #fef9c3;       /* kuning lembut */
+      box-sizing: border-box;
+    }
+
+    .title-box h1 {
+      margin: 0;
+      font-size: 1.6em;
+      color: #14532d;
+      text-shadow: 1px 1px 2px #d4af37;
+    }
+
+    .header p {
+      color: #444;
+      font-size: 0.9em;
+      margin-top: 0;
+    }
+
+    /* --- Menu Grid --- */
+    .menu-grid, .extra-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px 10px;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .menu-item a, .menu-item button {
+      text-decoration: none;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .icon-wrapper {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 5px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .icon-green {
+      background-color: #e8fdf2;
+      border: 2px solid #14532d;
+    }
+
+    .icon-gold {
+      background-color: #fffbea;
+      border: 2px solid #d4af37;
+    }
+
+    .icon-main {
+      font-size: 24px;
+      color: #14532d;
+      transition: color 0.3s ease;
+    }
+
+    .icon-gold .icon-main {
+      color: #b8860b; /* dark golden */
+    }
+
+    /* Hover */
+    .icon-wrapper:hover {
+      background-color: #d4af37;
+      border-color: #d4af37;
+      transform: scale(1.1);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+    }
+    .icon-wrapper:hover .icon-main {
+      color: #fff;
+    }
+
+    /* --- Slideshow --- */
+    .image-section {
+      width: 100%;
+      padding: 0 10px;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+    }
+
+    .slideshow {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 10px;
+      background-color: #f0f0f0;
+    }
+
+    .slides {
+      display: flex;
+      transition: transform 1s ease-in-out;
+    }
+
+    .slides img {
+      width: 100%;
+      flex: 0 0 100%;
+      border-radius: 10px;
+    }
+
+    /* --- Footer --- */
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.75em;
+      color: #444;
+      background-color: #fffbea;
+      padding: 10px;
+      border-top: 1px solid #d4af37;
+      border-radius: 0 0 10px 10px;
+    }
+
+    .footer p {
+      margin: 3px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <div class="title-box">
+        <h1>MASJID AL HIDAYAH</h1>
+      </div>
+      <p>Perumahan Bukit Kencana II</p>
+    </div>
+
+    <!-- Menu 8 lingkaran -->
+    <div class="menu-grid">
+      <div class="menu-item">
+        <a href="donasi.php" target="_blank">
+          <div class="icon-wrapper icon-gold">
+            <i class="fa-solid fa-hand-holding-dollar icon-main"></i>
+          </div>
+          <span>Donasi</span>
+        </a>
+      </div>
+      <div class="menu-item">
+        <a href="profile.html">
+          <div class="icon-wrapper icon-green">
+            <i class="fa-solid fa-user icon-main"></i>
+          </div>
+          <span>Profil</span>
+        </a>
+      </div>
+      <div class="menu-item">
+        <a href="https://www.youtube.com/@alhidayah.bukitkencana" target="_blank">
+          <div class="icon-wrapper icon-gold">
+            <i class="fa-solid fa-book-open icon-main"></i>
+          </div>
+          <span>Rekaman Kajian</span>
+        </a>
+      </div>
+      <div class="menu-item">
+        
+<a href="https://alhidayahmsj.github.io/Live.masjidilharam/" target="_blank" rel="noopener noreferrer">
+
+
+          <div class="icon-wrapper icon-green">
+            <i class="fa-solid fa-mosque icon-main"></i>
+          </div>
+          <span>Live Mekah</span>
+        </a>
+      </div>
+      <div class="menu-item">
+        <a href="foto.html" target="_blank">
+          <div class="icon-wrapper icon-gold">
+            <i class="fa-solid fa-image icon-main"></i>
+          </div>
+          <span>Foto</span>
+        </a>
+      </div>
+      <div class="menu-item">
+        <a href="video.html" target="_blank">
+          <div class="icon-wrapper icon-green">
+            <i class="fa-solid fa-video icon-main"></i>
+          </div>
+          <span>Video</span>
+        </a>
+      </div>
+      <div class="menu-item">
+        <a href="jadwal_sholat.html" target="_blank">
+          <div class="icon-wrapper icon-gold">
+            <i class="fa-solid fa-praying-hands icon-main"></i>
+          </div>
+          <span>Jadwal Sholat</span>
+        </a>
+      </div>
+      <div class="menu-item">
+        <a href="kiblat-online.html" target="_blank">
+          <div class="icon-wrapper icon-green">
+            <i class="fa-solid fa-compass icon-main"></i>
+          </div>
+          <span>Arah Kiblat</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Slideshow -->
+    <div class="image-section">
+      <div class="slideshow">
+        <div class="slides">
+          <img src="masjid1.jpeg" alt="masjid1">
+          <img src="masjid2.jpeg" alt="masjid2">
+          <img src="masjid3.jpeg" alt="masjid3">
+          <img src="masjid4.jpeg" alt="masjid4">
+          <img src="masjid5.jpeg" alt="masjid5">
+        </div>
+      </div>
+    </div>
+
+    <!-- Extra 4 link lingkaran -->
+    <div class="extra-grid">
+      <div class="menu-item">
+        <a href="kajian.mingguan.html">
+          <div class="icon-wrapper icon-green">
+            <i class="fa-solid fa-calendar-check icon-main"></i>
+          </div>
+          <span>Jadwal Kajian</span>
+        </a>
+      </div>
+      <div class="menu-item">
+        <a href="laporan.keuangan.php">
+          <div class="icon-wrapper icon-gold">
+            <i class="fa-solid fa-file-invoice-dollar icon-main"></i>
+          </div>
+          <span>Laporan Keuangan</span>
+        </a>
+      </div>
+      <div class="menu-item">
+        <a href="quran-id.html">
+          <div class="icon-wrapper icon-green">
+            <i class="fa-solid fa-quran icon-main"></i>
+          </div>
+          <span>Quran Digital</span>
+        </a>
+      </div>
+      <div class="menu-item">
+        <a href="artikel/listartikel.php">
+          <div class="icon-wrapper icon-gold">
+            <i class="fa-solid fa-newspaper icon-main"></i>
+          </div>
+          <span>Artikel</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>Created By Multi Media Team</p>
+      <p>Masjid Al Hidayah</p>
+    </div>
+  </div>
+
+<script>
+  let index = 0;
+  const slides = document.querySelector(".slides");
+  const totalSlides = document.querySelectorAll(".slides img").length;
+
+  setInterval(() => {
+    index = (index + 1) % totalSlides;
+    slides.style.transform = `translateX(-${index * 100}%)`;
+  }, 3000);
+</script>
+</body>
+</html>
