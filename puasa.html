@@ -275,8 +275,10 @@ setInterval(()=>{
     const res=await fetch(`https://api.myquran.com/v2/sholat/jadwal/${cityID}/${today}`);
     const j=(await res.json()).data.jadwal;
 
-    prayerText.textContent=
-      `Jadwal Sholat Hari Ini | Subuh ${j.subuh} | Dzuhur ${j.dzuhur} | Ashar ${j.ashar} | Maghrib ${j.maghrib} | Isya ${j.isya}`;
+   const hari = new Date().toLocaleDateString("id-ID",{ weekday:"long" });
+
+prayerText.textContent=
+  `${hari} | Subuh ${j.subuh} | Dzuhur ${j.dzuhur} | Ashar ${j.ashar} | Maghrib ${j.maghrib} | Isya ${j.isya}`;
 
     const [h,m]=j.maghrib.split(":");
     const magrib=new Date(); magrib.setHours(h,m,0,0);
