@@ -1,134 +1,122 @@
 <!doctype html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>INFO MASJID AL HIDAYAH</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>INFO MASJID AL HIDAYAH</title>
 
-  <meta name="description" content="Info Masjid Al Hidayah - Dakwah, Kajian Islam, Jadwal Sholat, Donasi, dan Kegiatan Masjid.">
-  <meta name="keywords" content="Masjid Al Hidayah, kajian, jadwal sholat, donasi, dakwah, kegiatan masjid">
-  <meta name="author" content="Masjid Al Hidayah">
+<meta name="description" content="Info Masjid Al Hidayah">
+<meta name="keywords" content="Masjid, Jadwal Sholat">
+<meta name="author" content="Masjid Al Hidayah">
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #146C1B;
-      color: #fff;
-      padding-bottom: 80px;
-    }
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #146C1B;
+  color: #fff;
+  padding-bottom: 80px;
+}
 
-    header {
-      display:flex;
-      align-items:center;
-      gap:10px;
-      padding:12px 15px;
-      background:#1A5917;
-      border-bottom:2px solid rgba(255,255,255,.2);
-    }
-    header img { width:40px;height:40px;object-fit:contain; }
-    header h1 { font-size:1.2rem;margin:0; }
-    header p { margin:2px 0 0;font-size:0.85rem;color:#ddd; }
+/* Header */
+header {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 15px;
+  background:#1A5917;
+}
+header img { width:40px;height:40px; }
+header h1 { margin:0;font-size:1.2rem; }
+header p { margin:0;font-size:.85rem;color:#ddd; }
 
-    nav { padding:15px; }
-    nav ul { list-style:none;margin:0;padding:0; }
-    nav li { margin-bottom:10px;position:relative; }
-    nav a {
-      display:block;
-      padding:12px;
-      text-decoration:none;
-      color:#fff;
-      font-weight:bold;
-      background:#338B2E;
-      border-radius:12px;
-      box-shadow:0 2px 6px rgba(0,0,0,.3);
-    }
-    nav a:hover { background:#0D6309; }
-    .toggle {
-      position:absolute;
-      right:15px;
-      top:50%;
-      transform:translateY(-50%);
-      background:none;
-      border:none;
-      color:#fff;
-      font-size:16px;
-      cursor:pointer;
-    }
-    .submenu {
-      max-height:0;
-      overflow:hidden;
-      transition:max-height 0.4s ease;
-      margin-left:20px;
-    }
-    .submenu a {
-      font-weight:normal;
-      background:#0E6F14;
-      border-radius:10px;
-      font-size:.95rem;
-      margin-top:5px;
-    }
-    .submenu.show { max-height:500px; }
+/* Menu */
+nav { padding:15px; }
+nav ul { list-style:none;margin:0;padding:0; }
+nav li { margin-bottom:10px;position:relative; }
+nav a {
+  display:block;
+  padding:12px;
+  text-decoration:none;
+  color:#fff;
+  background:#338B2E;
+  border-radius:12px;
+}
+.toggle {
+  position:absolute;
+  right:15px;
+  top:50%;
+  transform:translateY(-50%);
+  background:none;
+  border:none;
+  color:#fff;
+}
+.submenu {
+  max-height:0;
+  overflow:hidden;
+  transition:.4s;
+  margin-left:15px;
+}
+.submenu.show { max-height:500px; }
+.submenu a {
+  background:#0E6F14;
+  margin-top:5px;
+  border-radius:10px;
+}
 
-    .slideshow {
-      width:100%;
-      max-width:1000px;
-      aspect-ratio:16/9;
-      margin:20px auto 60px;
-      position:relative;
-      overflow:hidden;
-      border-radius:15px;
-      box-shadow:0 4px 12px rgba(0,0,0,.4);
-      background:#000;
-    }
-    .slideshow img {
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      position:absolute;
-      opacity:0;
-      transition:opacity 1s ease-in-out;
-    }
-    .slideshow img.active { opacity:1; }
+/* Slideshow */
+.slideshow {
+  width:100%;
+  max-width:1000px;
+  aspect-ratio:16/9;
+  margin:20px auto 60px;
+  position:relative;
+  overflow:hidden;
+  border-radius:15px;
+}
+.slideshow img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  position:absolute;
+  opacity:0;
+  transition:1s;
+}
+.slideshow img.active { opacity:1; }
 
-    /* ===== JADWAL PUASA ===== */
-    .jadwal-puasa {
-      width:100%;
-      max-width:1200px;
-      margin:-40px auto 40px;
-      padding:0 15px;
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(110px,1fr));
-      gap:10px;
-    }
-    .puasa-box {
-      background:rgba(0,0,0,0.35);
-      border-radius:12px;
-      padding:10px 6px;
-      text-align:center;
-      font-size:13px;
-      box-shadow:0 2px 6px rgba(0,0,0,.4);
-    }
-    .puasa-box span {
-      display:block;
-      font-size:14px;
-      font-weight:bold;
-      color:#ffd700;
-      margin-bottom:4px;
-    }
+/* === OVERLAY JADWAL SHOLAT === */
+.prayer-overlay {
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:100%;
+  background:rgba(0,0,0,.65);
+  font-size:14px;
+  padding:6px 0;
+  overflow:hidden;
+}
+.prayer-marquee {
+  white-space:nowrap;
+  display:inline-block;
+  padding-left:100%;
+  animation:marquee 25s linear infinite;
+}
+@keyframes marquee {
+  from { transform:translateX(0); }
+  to { transform:translateX(-100%); }
+}
 
-    .credit {
-      position:fixed;
-      bottom:0;
-      left:0;
-      width:100%;
-      text-align:center;
-      background:rgba(0,0,0,0.3);
-      padding:8px 0;
-      font-size:14px;
-      color:#ddd;
-    }
-  </style>
+/* Footer */
+.credit {
+  position:fixed;
+  bottom:0;
+  width:100%;
+  text-align:center;
+  background:rgba(0,0,0,.4);
+  padding:8px;
+  font-size:14px;
+}
+</style>
 </head>
 
 <body>
@@ -137,91 +125,94 @@
   <img src="logo.png">
   <div>
     <h1>MASJID AL HIDAYAH</h1>
-    <p>Menyebarkan nilai-nilai Islam yang rahmatan lil ‘alamin</p>
+    <p>Menyebarkan nilai Islam rahmatan lil alamin</p>
   </div>
 </header>
 
 <nav>
 <ul>
-<li><a href="#">Donasi</a></li>
-<li>
-<a href="#">Info & Kegiatan</a>
-<button class="toggle">▼</button>
-<div class="submenu">
-<a href="#">Sejarah Masjid</a>
-<a href="#">Jadwal Kajian</a>
-</div>
-</li>
+  <li><a href="#">Donasi</a></li>
+  <li>
+    <a href="#">Info & Kegiatan</a>
+    <button class="toggle">▼</button>
+    <div class="submenu">
+      <a href="#">Susunan Pengurus</a>
+      <a href="#">Jadwal Kajian</a>
+    </div>
+  </li>
 </ul>
 </nav>
 
 <div class="slideshow">
-<img src="masjid1.jpg" class="slide active">
-<img src="masjid2.jpg" class="slide">
-<img src="masjid3.jpg" class="slide">
+  <img src="masjid1.jpg" class="slide active">
+  <img src="masjid2.jpg" class="slide">
+  <img src="masjid3.jpg" class="slide">
+
+  <!-- OVERLAY JADWAL SHOLAT -->
+  <div class="prayer-overlay">
+    <div id="prayerText" class="prayer-marquee">
+      Memuat jadwal sholat hari ini...
+    </div>
+  </div>
 </div>
 
-<!-- JADWAL PUASA -->
-<div id="jadwalPuasa" class="jadwal-puasa"></div>
-
-<audio id="adzanMaghrib">
-  <source src="adzan.mp3" type="audio/mpeg">
+<audio id="azanAudio">
+  <source src="azan.mp3" type="audio/mpeg">
 </audio>
 
 <div class="credit">
-Created By : Team Multi Media<br>
+Created By : Team Multimedia<br>
 Masjid Al Hidayah
 </div>
 
 <script>
 document.querySelectorAll(".toggle").forEach(btn=>{
   btn.onclick=()=>{
-    const sm=btn.nextElementSibling;
-    sm.classList.toggle("show");
-    btn.textContent=sm.classList.contains("show")?"▲":"▼";
+    const s=btn.nextElementSibling;
+    s.classList.toggle("show");
+    btn.textContent=s.classList.contains("show")?"▲":"▼";
   }
 });
 
-const slides=document.querySelectorAll(".slide");
+/* Slideshow */
 let i=0;
+const slides=document.querySelectorAll(".slide");
 setInterval(()=>{
   slides[i].classList.remove("active");
   i=(i+1)%slides.length;
   slides[i].classList.add("active");
 },3000);
 
-/* JADWAL PUASA */
-const KODE_KOTA="3273";
+/* JADWAL SHOLAT + AZAN MAGRIB */
+(async ()=>{
+  const kotaID=1301; // Jakarta
+  const t=new Date().toISOString().split("T")[0];
 
-async function loadJadwalPuasa(){
-  const d=new Date();
-  const r=await fetch(
-    `https://api.myquran.com/v2/sholat/jadwal/${KODE_KOTA}/${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`
-  );
-  const j=(await r.json()).data.jadwal;
+  try{
+    const r=await fetch(`https://api.myquran.com/v2/sholat/jadwal/${kotaID}/${t}`);
+    const d=await r.json();
+    const j=d.data.jadwal;
 
-  document.getElementById("jadwalPuasa").innerHTML=`
-    <div class="puasa-box"><span>${j.tanggal}</span>Tanggal</div>
-    <div class="puasa-box"><span>${j.imsak}</span>Imsak</div>
-    <div class="puasa-box"><span>${j.subuh}</span>Subuh</div>
-    <div class="puasa-box"><span>${j.dzuhur}</span>Dzuhur</div>
-    <div class="puasa-box"><span>${j.ashar}</span>Ashar</div>
-    <div class="puasa-box"><span>${j.maghrib}</span>Maghrib</div>
-    <div class="puasa-box"><span>${j.isya}</span>Isya</div>
-  `;
+    document.getElementById("prayerText").textContent=
+      `Jadwal Sholat Hari Ini | Subuh ${j.subuh} | Dzuhur ${j.dzuhur} | Ashar ${j.ashar} | Maghrib ${j.maghrib} | Isya ${j.isya}`;
 
-  let done=false;
-  setInterval(()=>{
-    const n=new Date();
-    const t=String(n.getHours()).padStart(2,"0")+":"+String(n.getMinutes()).padStart(2,"0");
-    if(t===j.maghrib && !done){
-      document.getElementById("adzanMaghrib").play();
-      done=true;
-    }
-  },1000);
-}
+    const azan=document.getElementById("azanAudio");
+    const [h,m]=j.maghrib.split(":");
+    const magrib=new Date();
+    magrib.setHours(h,m,0,0);
 
-loadJadwalPuasa();
+    let played=false;
+    setInterval(()=>{
+      if(!played && new Date()>=magrib){
+        azan.play().catch(()=>{});
+        played=true;
+      }
+    },1000);
+
+  }catch{
+    document.getElementById("prayerText").textContent="Jadwal sholat tidak tersedia";
+  }
+})();
 </script>
 
 </body>
