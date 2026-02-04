@@ -87,7 +87,7 @@ nav a:hover{background:#0D6309;}
 }
 .slideshow img.active{opacity:1;}
 
-/* RUNNING TEKS JADWAL SHOLAT */
+/* RUNNING TEKS */
 .prayer-overlay{
   position:absolute;
   bottom:0;
@@ -178,7 +178,6 @@ nav a:hover{background:#0D6309;}
     <button class="toggle">▼</button>
     <div class="submenu">
       <a href="https://masjid.infinityfreeapp.com/alhidayah/jumat/khatib.php">Sholat Jumat</a>
-     
       <a href="kiblat-online.html">Arah Kiblat</a>
     </div>
   </li>
@@ -229,7 +228,7 @@ setInterval(()=>{
   slides[i].classList.add("active");
 },3000);
 
-/* JADWAL SHOLAT + AZAN OTOMATIS */
+/* JADWAL SHOLAT + AZAN */
 (async()=>{
   const prayerText=document.getElementById("prayerText");
   const azan=document.getElementById("azanAudio");
@@ -276,10 +275,15 @@ setInterval(()=>{
     const res=await fetch(`https://api.myquran.com/v2/sholat/jadwal/${cityID}/${today}`);
     const j=(await res.json()).data.jadwal;
 
-    const hari=new Date().toLocaleDateString("id-ID",{weekday:"long"});
+    const hariTanggal=new Date().toLocaleDateString("id-ID",{
+      weekday:"long",
+      day:"numeric",
+      month:"long",
+      year:"numeric"
+    });
 
     prayerText.textContent=
-      `${hari} | Subuh ${j.subuh} | Dzuhur ${j.dzuhur} | Ashar ${j.ashar} | Maghrib ${j.maghrib} | Isya ${j.isya}`;
+      `${hariTanggal} | Subuh ${j.subuh} | Dzuhur ${j.dzuhur} | Ashar ${j.ashar} | Maghrib ${j.maghrib} | Isya ${j.isya}`;
 
     const jadwalAzan={
       subuh:j.subuh,
