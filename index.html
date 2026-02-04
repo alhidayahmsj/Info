@@ -13,8 +13,6 @@ body{
   color:#fff;
   padding-bottom:80px;
 }
-
-/* HEADER */
 header{
   display:flex;
   align-items:center;
@@ -25,8 +23,6 @@ header{
 header img{width:40px;height:40px;}
 header h1{margin:0;font-size:1.2rem;}
 header p{margin:2px 0 0;font-size:.85rem;color:#ddd}
-
-/* MENU */
 nav{padding:15px;}
 nav ul{list-style:none;margin:0;padding:0;}
 nav li{margin-bottom:10px;position:relative;}
@@ -49,7 +45,6 @@ nav a:hover{background:#0D6309;}
   border:none;
   color:#fff;
   font-size:16px;
-  cursor:pointer;
 }
 .submenu{
   max-height:0;
@@ -65,8 +60,6 @@ nav a:hover{background:#0D6309;}
   font-size:.95rem;
   margin-top:5px;
 }
-
-/* SLIDESHOW */
 .slideshow{
   width:100%;
   max-width:1000px;
@@ -86,8 +79,6 @@ nav a:hover{background:#0D6309;}
   transition:opacity 1s ease-in-out;
 }
 .slideshow img.active{opacity:1;}
-
-/* RUNNING TEKS */
 .prayer-overlay{
   position:absolute;
   bottom:0;
@@ -108,8 +99,6 @@ nav a:hover{background:#0D6309;}
   from{transform:translateX(0);}
   to{transform:translateX(-100%);}
 }
-
-/* FOOTER */
 .credit{
   position:fixed;
   bottom:0;
@@ -134,61 +123,9 @@ nav a:hover{background:#0D6309;}
   </div>
 </header>
 
-<nav>
-<ul>
-  <li><a href="https://bukitmsj.infinityfree.me/donasi/donasi.php" target="_blank">Donasi</a></li>
-
-  <li>
-    <a href="#">Info & Kegiatan</a>
-    <button class="toggle">▼</button>
-    <div class="submenu">
-      <a href="Dkm.jpeg" target="_blank">Susunan Pengurus</a>
-      <a href="sejarah.html">Sejarah Masjid</a>
-      <a href="https://masjid.infinityfreeapp.com/alhidayah/jumat/kajian.mingguan.html">Jadwal Kajian</a>
-      <a href="https://masjid.infinityfreeapp.com/alhidayah/laporan.keuangan.php/laporan.keuangan.php">Laporan Keuangan</a>
-      <a href="quran-id.html">Qur'an Digital</a>
-      <a href="https://masjid.infinityfreeapp.com/alhidayah/artikel/listartikel.php">Artikel</a>
-    </div>
-  </li>
-
-  <li><a href="https://www.youtube.com/@alhidayah.bukitkencana">Rekaman Kajian</a></li>
-
-  <li>
-    <a href="#">Belajar Bahasa Arab</a>
-    <button class="toggle">▼</button>
-    <div class="submenu">
-      <a href="https://ia601800.us.archive.org/14/items/eBook_Bhs_Arab_242/Panduan_Durusul_Lughah_al_Arabiyah_1.pdf">Durusul Lughah Jilid 1</a>
-      <a href="https://ia801206.us.archive.org/1/items/Kitab_Terjemahan/Panduan_Durusul_Lughah_al_Arabiyyah_4.pdf">Durusul Lughah Jilid 4</a>
-    </div>
-  </li>
-
-  <li><a href="https://alhidayahmsj.github.io/Live.masjidilharam/">Live Mekkah - Madinah</a></li>
-
-  <li>
-    <a href="#">Galeri Foto & Video</a>
-    <button class="toggle">▼</button>
-    <div class="submenu">
-      <a href="https://drive.google.com/drive/folders/1FCzaeXZ8eLlgArKoFJM2trA1L35Mar1G">Foto</a>
-      <a href="https://drive.google.com/drive/folders/1z1YnvwjZBNNIS2HYDSjhapydkBBqRzEt">Video</a>
-    </div>
-  </li>
-
-  <li>
-    <a href="#">Jadwal Sholat & Arah Kiblat</a>
-    <button class="toggle">▼</button>
-    <div class="submenu">
-      <a href="https://masjid.infinityfreeapp.com/alhidayah/jumat/khatib.php">Sholat Jumat</a>
-      <a href="kiblat-online.html">Arah Kiblat</a>
-    </div>
-  </li>
-</ul>
-</nav>
-
 <div class="slideshow">
   <img src="masjid1.jpg" class="slide active">
   <img src="masjid2.jpg" class="slide">
-  <img src="masjid3.jpg" class="slide">
-  <img src="masjid4.jpg" class="slide">
 
   <div class="prayer-overlay">
     <div id="prayerText" class="prayer-marquee">
@@ -197,7 +134,7 @@ nav a:hover{background:#0D6309;}
   </div>
 </div>
 
-<audio id="azanAudio" preload="auto">
+<audio id="azanAudio">
   <source src="azan.mp3" type="audio/mpeg">
 </audio>
 
@@ -207,18 +144,6 @@ Masjid Al Hidayah
 </div>
 
 <script>
-/* TOGGLE MENU */
-document.querySelectorAll(".toggle").forEach(btn=>{
-  btn.onclick=()=>{
-    const s=btn.nextElementSibling;
-    document.querySelectorAll(".submenu").forEach(x=>{
-      if(x!==s) x.classList.remove("show");
-    });
-    s.classList.toggle("show");
-    btn.textContent=s.classList.contains("show")?"▲":"▼";
-  };
-});
-
 /* SLIDESHOW */
 let i=0;
 const slides=document.querySelectorAll(".slide");
@@ -228,91 +153,29 @@ setInterval(()=>{
   slides[i].classList.add("active");
 },3000);
 
-/* JADWAL SHOLAT + AZAN */
+/* JADWAL SHOLAT */
 (async()=>{
   const prayerText=document.getElementById("prayerText");
-  const azan=document.getElementById("azanAudio");
+
   const today=new Date().toISOString().split("T")[0];
-  const sudahAzan={};
 
-  async function cityByGPS(){
-    return new Promise((ok,fail)=>{
-      navigator.geolocation.getCurrentPosition(
-        p=>ok(p.coords),
-        ()=>fail(),
-        {enableHighAccuracy:true,timeout:8000}
-      );
-    });
-  }
+  const res=await fetch(`https://api.myquran.com/v2/sholat/jadwal/1301/${today}`);
+  const j=(await res.json()).data.jadwal;
 
-  async function nearestCity(lat,lon){
-    const r=await fetch("https://api.myquran.com/v2/sholat/kota/semua");
-    const d=await r.json();
-    let id=1301,min=Infinity;
-    d.data.forEach(c=>{
-      const dist=Math.hypot(c.latitude-lat,c.longitude-lon);
-      if(dist<min){min=dist;id=c.id;}
-    });
-    return id;
-  }
+  /* FORMAT TANGGAL MANUAL (ANTI BUG ANDROID) */
+  const hariArr=["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+  const bulanArr=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
 
-  async function cityByIP(){
-    const ip=await fetch("https://ipapi.co/json/").then(r=>r.json());
-    const kota=await fetch("https://api.myquran.com/v2/sholat/kota/semua").then(r=>r.json());
-    const f=kota.data.find(c=>ip.city && c.lokasi.toLowerCase().includes(ip.city.toLowerCase()));
-    return f?f.id:1301;
-  }
+  const now=new Date();
+  const hari=hariArr[now.getDay()];
+  const tanggal=now.getDate();
+  const bulan=bulanArr[now.getMonth()];
+  const tahun=now.getFullYear();
 
-  try{
-    let cityID;
-    try{
-      const loc=await cityByGPS();
-      cityID=await nearestCity(loc.latitude,loc.longitude);
-    }catch{
-      cityID=await cityByIP();
-    }
+  const hariTanggal=`${hari}, ${tanggal} ${bulan} ${tahun}`;
 
-    const res=await fetch(`https://api.myquran.com/v2/sholat/jadwal/${cityID}/${today}`);
-    const j=(await res.json()).data.jadwal;
-
-    const hariTanggal=new Date().toLocaleDateString("id-ID",{
-      weekday:"long",
-      day:"numeric",
-      month:"long",
-      year:"numeric"
-    });
-
-    prayerText.textContent=
-      `${hariTanggal} | Subuh ${j.subuh} | Dzuhur ${j.dzuhur} | Ashar ${j.ashar} | Maghrib ${j.maghrib} | Isya ${j.isya}`;
-
-    const jadwalAzan={
-      subuh:j.subuh,
-      dzuhur:j.dzuhur,
-      ashar:j.ashar,
-      maghrib:j.maghrib,
-      isya:j.isya
-    };
-
-    setInterval(()=>{
-      const now=new Date();
-      const jam=String(now.getHours()).padStart(2,"0");
-      const menit=String(now.getMinutes()).padStart(2,"0");
-      const waktu=`${jam}:${menit}`;
-      const hariIni=now.toDateString();
-
-      for(const sholat in jadwalAzan){
-        const key=sholat+hariIni;
-        if(jadwalAzan[sholat]===waktu && !sudahAzan[key]){
-          sudahAzan[key]=true;
-          azan.currentTime=0;
-          azan.play().catch(()=>{});
-        }
-      }
-    },30000);
-
-  }catch{
-    prayerText.textContent="Jadwal sholat tidak tersedia";
-  }
+  prayerText.textContent=
+    `${hariTanggal} | Subuh ${j.subuh} | Dzuhur ${j.dzuhur} | Ashar ${j.ashar} | Maghrib ${j.maghrib} | Isya ${j.isya}`;
 })();
 </script>
 
