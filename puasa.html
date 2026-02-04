@@ -229,11 +229,12 @@ setInterval(()=>{
   slides[i].classList.add("active");
 },3000);
 
-/* JADWAL SHOLAT GPS + IP FALLBACK (HP AMAN) */
+/* JADWAL SHOLAT + AZAN OTOMATIS */
 (async()=>{
   const prayerText=document.getElementById("prayerText");
   const azan=document.getElementById("azanAudio");
   const today=new Date().toISOString().split("T")[0];
+  const sudahAzan={};
 
   async function cityByGPS(){
     return new Promise((ok,fail)=>{
@@ -275,20 +276,35 @@ setInterval(()=>{
     const res=await fetch(`https://api.myquran.com/v2/sholat/jadwal/${cityID}/${today}`);
     const j=(await res.json()).data.jadwal;
 
-   const hari = new Date().toLocaleDateString("id-ID",{ weekday:"long" });
+    const hari=new Date().toLocaleDateString("id-ID",{weekday:"long"});
 
-prayerText.textContent=
-  `${hari} | Subuh ${j.subuh} | Dzuhur ${j.dzuhur} | Ashar ${j.ashar} | Maghrib ${j.maghrib} | Isya ${j.isya}`;
+    prayerText.textContent=
+      `${hari} | Subuh ${j.subuh} | Dzuhur ${j.dzuhur} | Ashar ${j.ashar} | Maghrib ${j.maghrib} | Isya ${j.isya}`;
 
-    const [h,m]=j.maghrib.split(":");
-    const magrib=new Date(); magrib.setHours(h,m,0,0);
-    let played=false;
+    const jadwalAzan={
+      subuh:j.subuh,
+      dzuhur:j.dzuhur,
+      ashar:j.ashar,
+      maghrib:j.maghrib,
+      isya:j.isya
+    };
+
     setInterval(()=>{
-      if(!played && new Date()>=magrib){
-        azan.play().catch(()=>{});
-        played=true;
+      const now=new Date();
+      const jam=String(now.getHours()).padStart(2,"0");
+      const menit=String(now.getMinutes()).padStart(2,"0");
+      const waktu=`${jam}:${menit}`;
+      const hariIni=now.toDateString();
+
+      for(const sholat in jadwalAzan){
+        const key=sholat+hariIni;
+        if(jadwalAzan[sholat]===waktu && !sudahAzan[key]){
+          sudahAzan[key]=true;
+          azan.currentTime=0;
+          azan.play().catch(()=>{});
+        }
       }
-    },1000);
+    },30000);
 
   }catch{
     prayerText.textContent="Jadwal sholat tidak tersedia";
