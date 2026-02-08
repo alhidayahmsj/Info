@@ -87,28 +87,6 @@ nav a:hover{background:#0D6309;}
 }
 .slideshow img.active{opacity:1;}
 
-/* RUNNING TEKS JADWAL SHOLAT */
-.prayer-overlay{
-  position:absolute;
-  bottom:0;
-  left:0;
-  width:100%;
-  background:rgba(0,0,0,.65);
-  font-size:14px;
-  padding:6px 0;
-  overflow:hidden;
-}
-.prayer-marquee{
-  white-space:nowrap;
-  display:inline-block;
-  padding-left:100%;
-  animation:marquee 25s linear infinite;
-}
-@keyframes marquee{
-  from{transform:translateX(0);}
-  to{transform:translateX(-100%);}
-}
-
 /* FOOTER */
 .credit{
   position:fixed;
@@ -190,17 +168,7 @@ nav a:hover{background:#0D6309;}
   <img src="masjid2.jpg" class="slide">
   <img src="masjid3.jpg" class="slide">
   <img src="masjid4.jpg" class="slide">
-
-  <div class="prayer-overlay">
-    <div id="prayerText" class="prayer-marquee">
-      Memuat jadwal sholat...
-    </div>
-  </div>
 </div>
-
-<audio id="azanAudio" preload="auto">
-  <source src="azan.mp3" type="audio/mpeg">
-</audio>
 
 <div class="credit">
 Created By : Team Multi Media<br>
@@ -228,88 +196,6 @@ setInterval(()=>{
   i=(i+1)%slides.length;
   slides[i].classList.add("active");
 },3000);
-
-/* JADWAL SHOLAT + AZAN OTOMATIS */
-(async()=>{
-  const prayerText=document.getElementById("prayerText");
-  const azan=document.getElementById("azanAudio");
-  const today=new Date().toISOString().split("T")[0];
-  const sudahAzan={};
-
-  async function cityByGPS(){
-    return new Promise((ok,fail)=>{
-      navigator.geolocation.getCurrentPosition(
-        p=>ok(p.coords),
-        ()=>fail(),
-        {enableHighAccuracy:true,timeout:8000}
-      );
-    });
-  }
-
-  async function nearestCity(lat,lon){
-    const r=await fetch("https://api.myquran.com/v2/sholat/kota/semua");
-    const d=await r.json();
-    let id=1301,min=Infinity;
-    d.data.forEach(c=>{
-      const dist=Math.hypot(c.latitude-lat,c.longitude-lon);
-      if(dist<min){min=dist;id=c.id;}
-    });
-    return id;
-  }
-
-  async function cityByIP(){
-    const ip=await fetch("https://ipapi.co/json/").then(r=>r.json());
-    const kota=await fetch("https://api.myquran.com/v2/sholat/kota/semua").then(r=>r.json());
-    const f=kota.data.find(c=>ip.city && c.lokasi.toLowerCase().includes(ip.city.toLowerCase()));
-    return f?f.id:1301;
-  }
-
-  try{
-    let cityID;
-    try{
-      const loc=await cityByGPS();
-      cityID=await nearestCity(loc.latitude,loc.longitude);
-    }catch{
-      cityID=await cityByIP();
-    }
-
-    const res=await fetch(`https://api.myquran.com/v2/sholat/jadwal/${cityID}/${today}`);
-    const j=(await res.json()).data.jadwal;
-
-    const hari=new Date().toLocaleDateString("id-ID",{weekday:"long"});
-
-    prayerText.textContent=
-      `${hari} | Subuh ${j.subuh} | Dzuhur ${j.dzuhur} | Ashar ${j.ashar} | Maghrib ${j.maghrib} | Isya ${j.isya}`;
-
-    const jadwalAzan={
-      subuh:j.subuh,
-      dzuhur:j.dzuhur,
-      ashar:j.ashar,
-      maghrib:j.maghrib,
-      isya:j.isya
-    };
-
-    setInterval(()=>{
-      const now=new Date();
-      const jam=String(now.getHours()).padStart(2,"0");
-      const menit=String(now.getMinutes()).padStart(2,"0");
-      const waktu=`${jam}:${menit}`;
-      const hariIni=now.toDateString();
-
-      for(const sholat in jadwalAzan){
-        const key=sholat+hariIni;
-        if(jadwalAzan[sholat]===waktu && !sudahAzan[key]){
-          sudahAzan[key]=true;
-          azan.currentTime=0;
-          azan.play().catch(()=>{});
-        }
-      }
-    },30000);
-
-  }catch{
-    prayerText.textContent="Jadwal sholat tidak tersedia";
-  }
-})();
 </script>
 
 </body>
