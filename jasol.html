@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+<title>Jadwal Sholat</title>
+
+<style>
+body{
+  font-family:Arial, sans-serif;
+  margin:0;
+  background:linear-gradient(160deg,#052e1b,#02140c);
+  color:#eafff3;
+  padding:15px;
+  text-align:center;
+}
+
+h2{color:#7dffcc;margin-bottom:5px}
+h3{font-weight:normal;color:#9affd2;margin-top:0}
+
+/* ===== JAM ANALOG ===== */
+.clock{
+  width:200px;
+  height:200px;
+  border:6px solid #0f5132;
+  border-radius:50%;
+  margin:20px auto;
+  position:relative;
+  background:#02140c;
+  box-shadow:0 0 25px rgba(0,255,150,0.2);
+}
+
+.hand{
+  position:absolute;
+  bottom:50%;
+  left:50%;
+  transform-origin:bottom;
+  transform:translateX(-50%);
+}
+
+.hour{width:6px;height:50px;background:#00ff99;}
+.minute{width:4px;height:70px;background:#7dffcc;}
+.second{width:2px;height:85px;background:#00ffaa;}
+
+.center{
+  width:10px;height:10px;
+  background:#00ff99;
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+}
+
+/* ===== JADWAL ===== */
+.card{
+  background:#031b10;
+  border-radius:14px;
+  padding:20px;
+  box-shadow:0 0 20px rgba(0,255,150,0.1);
+  margin-top:20px;
+}
+
+.row{
+  display:grid;
+  grid-template-columns:1fr auto;
+  padding:10px 0;
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+.row:last-child{border-bottom:none}
+
+.label{font-weight:bold}
+.time{font-weight:bold;color:#7dffcc}
+</style>
+</head>
+
+<body>
+
+<h2>Jadwal Sholat</h2>
+<h3>Masjid Al Hidayah</h3>
+
+<!-- JAM -->
+<div class="clock">
+  <div class="hand hour" id="hour"></div>
+  <div class="hand minute" id="minute"></div>
+  <div class="hand second" id="second"></div>
+  <div class="center"></div>
+</div>
+
+<div class="card" id="jadwal">Memuat jadwal sholat...</div>
+
+<script>
+/* ===== JAM ANALOG ===== */
+function updateClock(){
+  const now=new Date();
+
+  const sec=now.getSeconds();
+  const min=now.getMinutes();
+  const hr=now.getHours();
+
+  const secDeg=sec*6;
+  const minDeg=min*6;
+  const hrDeg=(hr%12)*30 + min*0.5;
+
+  document.getElementById("second").style.transform =
+    `translateX(-50%) rotate(${secDeg}deg)`;
+
+  document.getElementById("minute").style.transform =
+    `translateX(-50%) rotate(${minDeg}deg)`;
+
+  document.getElementById("hour").style.transform =
+    `translateX(-50%) rotate(${hrDeg}deg)`;
+}
+setInterval(updateClock,1000);
+updateClock();
+
+/* ===== JADWAL SHOLAT ===== */
+(async()=>{
+  const box=document.getElementById("jadwal");
+
+  const today=new Date();
+  today.setHours(0,0,0,0);
+  const todayISO=today.toISOString().split("T")[0];
+
+  try{
+    const cityID=1301; // Bekasi
+    const res=await fetch(
+      `https://api.myquran.com/v2/sholat/jadwal/${cityID}/${todayISO}`,
+      { cache:"no-store" }
+    );
+
+    if(!res.ok) throw "API ERROR";
+
+    const json=await res.json();
+    const j=json.data.jadwal;
+
+    function tambahMenit(waktu,m){
+      let [h,mm]=waktu.split(":").map(Number);
+      let d=new Date();
+      d.setHours(h,mm+m);
+      return d.toTimeString().slice(0,5);
+    }
+
+    box.innerHTML=`
+      <div class="row"><div class="label">Subuh</div><div class="time">${j.subuh}</div></div>
+      <div class="row"><div class="label">Dzuhur</div><div class="time">${j.dzuhur}</div></div>
+      <div class="row"><div class="label">Ashar</div><div class="time">${j.ashar}</div></div>
+      <div class="row"><div class="label">Maghrib</div><div class="time">${j.maghrib}</div></div>
+      <div class="row"><div class="label">Isya</div><div class="time">${j.isya}</div></div>
+    `;
+  }catch(e){
+    console.error(e);
+    box.innerHTML="<b>Jadwal sholat tidak tersedia</b>";
+  }
+})();
+</script>
+
+</body>
+</html>
