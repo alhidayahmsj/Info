@@ -25,8 +25,8 @@ h3{font-weight:normal;color:#9affd2;margin-top:0}
 
 /* ===== JAM ANALOG ===== */
 .clock{
-  width:200px;
-  height:200px;
+  width:220px;
+  height:220px;
   border:6px solid #0f5132;
   border-radius:50%;
   margin:20px auto;
@@ -34,6 +34,36 @@ h3{font-weight:normal;color:#9affd2;margin-top:0}
   background:#02140c;
   box-shadow:0 0 25px rgba(0,255,150,0.2);
 }
+
+/* ANGKA JAM */
+.number{
+  position:absolute;
+  width:100%;
+  height:100%;
+  text-align:center;
+  transform:rotate(var(--deg));
+}
+
+.number span{
+  display:block;
+  transform:rotate(calc(-1 * var(--deg)));
+  color:#7dffcc;
+  font-weight:bold;
+}
+
+/* jarak tiap angka */
+.n1{--deg:30deg}
+.n2{--deg:60deg}
+.n3{--deg:90deg}
+.n4{--deg:120deg}
+.n5{--deg:150deg}
+.n6{--deg:180deg}
+.n7{--deg:210deg}
+.n8{--deg:240deg}
+.n9{--deg:270deg}
+.n10{--deg:300deg}
+.n11{--deg:330deg}
+.n12{--deg:0deg}
 
 .hand{
   position:absolute;
@@ -43,9 +73,9 @@ h3{font-weight:normal;color:#9affd2;margin-top:0}
   transform:translateX(-50%);
 }
 
-.hour{width:6px;height:50px;background:#00ff99;}
-.minute{width:4px;height:70px;background:#7dffcc;}
-.second{width:2px;height:85px;background:#00ffaa;}
+.hour{width:6px;height:55px;background:#00ff99;}
+.minute{width:4px;height:75px;background:#7dffcc;}
+.second{width:2px;height:90px;background:#00ffaa;}
 
 .center{
   width:10px;height:10px;
@@ -70,11 +100,12 @@ h3{font-weight:normal;color:#9affd2;margin-top:0}
   grid-template-columns:1fr auto;
   padding:10px 0;
   border-bottom:1px solid rgba(255,255,255,.1);
+  text-align:left; /* 🔥 RATA KIRI */
 }
 .row:last-child{border-bottom:none}
 
 .label{font-weight:bold}
-.time{font-weight:bold;color:#7dffcc}
+.time{font-weight:bold;color:#7dffcc;text-align:right}
 </style>
 </head>
 
@@ -85,6 +116,22 @@ h3{font-weight:normal;color:#9affd2;margin-top:0}
 
 <!-- JAM -->
 <div class="clock">
+
+  <!-- ANGKA -->
+  <div class="number n1"><span>1</span></div>
+  <div class="number n2"><span>2</span></div>
+  <div class="number n3"><span>3</span></div>
+  <div class="number n4"><span>4</span></div>
+  <div class="number n5"><span>5</span></div>
+  <div class="number n6"><span>6</span></div>
+  <div class="number n7"><span>7</span></div>
+  <div class="number n8"><span>8</span></div>
+  <div class="number n9"><span>9</span></div>
+  <div class="number n10"><span>10</span></div>
+  <div class="number n11"><span>11</span></div>
+  <div class="number n12"><span>12</span></div>
+
+  <!-- JARUM -->
   <div class="hand hour" id="hour"></div>
   <div class="hand minute" id="minute"></div>
   <div class="hand second" id="second"></div>
@@ -127,7 +174,7 @@ updateClock();
   const todayISO=today.toISOString().split("T")[0];
 
   try{
-    const cityID=1301; // Bekasi
+    const cityID=1301;
     const res=await fetch(
       `https://api.myquran.com/v2/sholat/jadwal/${cityID}/${todayISO}`,
       { cache:"no-store" }
@@ -137,13 +184,6 @@ updateClock();
 
     const json=await res.json();
     const j=json.data.jadwal;
-
-    function tambahMenit(waktu,m){
-      let [h,mm]=waktu.split(":").map(Number);
-      let d=new Date();
-      d.setHours(h,mm+m);
-      return d.toTimeString().slice(0,5);
-    }
 
     box.innerHTML=`
       <div class="row"><div class="label">Subuh</div><div class="time">${j.subuh}</div></div>
