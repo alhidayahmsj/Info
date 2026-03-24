@@ -1,202 +1,202 @@
 <!doctype html>
 <html lang="id">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-
-<title>Jadwal Sholat</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>INFO MASJID AL HIDAYAH</title>
 
 <style>
 body{
-  font-family:Arial, sans-serif;
+  font-family:Arial,sans-serif;
   margin:0;
-  background:linear-gradient(160deg,#052e1b,#02140c);
-  color:#eafff3;
-  padding:15px;
-  text-align:center;
+  background:#146C1B;
+  color:#fff;
+  padding-bottom:80px;
 }
 
-h2{color:#7dffcc;margin-bottom:5px}
-h3{font-weight:normal;color:#9affd2;margin-top:0}
-
-/* ===== JAM ANALOG ===== */
-.clock{
-  width:220px;
-  height:220px;
-  border:6px solid #0f5132;
-  border-radius:50%;
-  margin:20px auto;
-  position:relative;
-  background:#02140c;
-  box-shadow:0 0 25px rgba(0,255,150,0.2);
+/* HEADER */
+header{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 15px;
+  background:#1A5917;
 }
+header img{width:40px;height:40px;}
+header h1{margin:0;font-size:1.2rem;}
+header p{margin:2px 0 0;font-size:.85rem;color:#ddd}
 
-/* ANGKA JAM */
-.number{
+/* MENU */
+nav{padding:15px;}
+nav ul{list-style:none;margin:0;padding:0;}
+nav li{margin-bottom:10px;position:relative;}
+nav a{
+  display:block;
+  padding:12px;
+  text-decoration:none;
+  color:#fff;
+  font-weight:bold;
+  background:#338B2E;
+  border-radius:12px;
+}
+nav a:hover{background:#0D6309;}
+.toggle{
   position:absolute;
+  right:15px;
+  top:50%;
+  transform:translateY(-50%);
+  background:none;
+  border:none;
+  color:#fff;
+  font-size:16px;
+  cursor:pointer;
+}
+.submenu{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .4s ease;
+  margin-left:20px;
+}
+.submenu.show{max-height:800px;}
+.submenu a{
+  font-weight:normal;
+  background:#0E6F14;
+  border-radius:10px;
+  font-size:.95rem;
+  margin-top:5px;
+}
+
+/* SLIDESHOW */
+.slideshow{
+  width:100%;
+  max-width:1000px;
+  aspect-ratio:16/9;
+  margin:20px auto 60px;
+  position:relative;
+  overflow:hidden;
+  border-radius:15px;
+  background:#000;
+}
+.slideshow img{
   width:100%;
   height:100%;
+  object-fit:cover;
+  position:absolute;
+  opacity:0;
+  transition:opacity 1s ease-in-out;
+}
+.slideshow img.active{opacity:1;}
+
+/* FOOTER */
+.credit{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
   text-align:center;
-  transform:rotate(var(--deg));
+  background:rgba(0,0,0,.3);
+  padding:8px 0;
+  font-size:14px;
+  color:#ddd;
 }
-
-.number span{
-  display:block;
-  transform:rotate(calc(-1 * var(--deg)));
-  color:#7dffcc;
-  font-weight:bold;
-}
-
-/* jarak tiap angka */
-.n1{--deg:30deg}
-.n2{--deg:60deg}
-.n3{--deg:90deg}
-.n4{--deg:120deg}
-.n5{--deg:150deg}
-.n6{--deg:180deg}
-.n7{--deg:210deg}
-.n8{--deg:240deg}
-.n9{--deg:270deg}
-.n10{--deg:300deg}
-.n11{--deg:330deg}
-.n12{--deg:0deg}
-
-.hand{
-  position:absolute;
-  bottom:50%;
-  left:50%;
-  transform-origin:bottom;
-  transform:translateX(-50%);
-}
-
-.hour{width:6px;height:55px;background:#00ff99;}
-.minute{width:4px;height:75px;background:#7dffcc;}
-.second{width:2px;height:90px;background:#00ffaa;}
-
-.center{
-  width:10px;height:10px;
-  background:#00ff99;
-  position:absolute;
-  top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  border-radius:50%;
-}
-
-/* ===== JADWAL ===== */
-.card{
-  background:#031b10;
-  border-radius:14px;
-  padding:20px;
-  box-shadow:0 0 20px rgba(0,255,150,0.1);
-  margin-top:20px;
-}
-
-.row{
-  display:grid;
-  grid-template-columns:1fr auto;
-  padding:10px 0;
-  border-bottom:1px solid rgba(255,255,255,.1);
-  text-align:left; /* 🔥 RATA KIRI */
-}
-.row:last-child{border-bottom:none}
-
-.label{font-weight:bold}
-.time{font-weight:bold;color:#7dffcc;text-align:right}
 </style>
 </head>
 
 <body>
 
-<h2>Jadwal Sholat</h2>
-<h3>Masjid Al Hidayah</h3>
+<header>
+  <img src="logo.png">
+  <div>
+    <h1>MASJID AL HIDAYAH</h1>
+    <p>Menyebarkan nilai-nilai Islam rahmatan lil ‘alamin</p>
+  </div>
+</header>
 
-<!-- JAM -->
-<div class="clock">
+<nav>
+<ul>
+  <li><a href="https://obat.infinityfree.me/donasi/donasi.php" target="_blank">Donasi</a></li>
 
-  <!-- ANGKA -->
-  <div class="number n1"><span>1</span></div>
-  <div class="number n2"><span>2</span></div>
-  <div class="number n3"><span>3</span></div>
-  <div class="number n4"><span>4</span></div>
-  <div class="number n5"><span>5</span></div>
-  <div class="number n6"><span>6</span></div>
-  <div class="number n7"><span>7</span></div>
-  <div class="number n8"><span>8</span></div>
-  <div class="number n9"><span>9</span></div>
-  <div class="number n10"><span>10</span></div>
-  <div class="number n11"><span>11</span></div>
-  <div class="number n12"><span>12</span></div>
 
-  <!-- JARUM -->
-  <div class="hand hour" id="hour"></div>
-  <div class="hand minute" id="minute"></div>
-  <div class="hand second" id="second"></div>
-  <div class="center"></div>
+  <li>
+    <a href="#">Info & Kegiatan</a>
+    <button class="toggle">▼</button>
+    <div class="submenu">
+      <a href="Dkm.jpeg" target="_blank">Susunan Pengurus</a>
+      <a href="sejarah.html">Sejarah Masjid</a>
+      <a href="https://masjid.infinityfreeapp.com/alhidayah/jumat/kegiatan.html">Kajian Minggu Subuh</a>
+      <a href="https://masjid.infinityfreeapp.com/alhidayah/laporan.keuangan.php/laporan.keuangan.php">Laporan Keuangan</a>
+      <a href="quran-id.html">Qur'an Digital</a>
+      <a href="https://masjid.infinityfreeapp.com/alhidayah/artikel/listartikel.php">Artikel</a>
+    </div>
+  </li>
+
+  <li><a href="https://www.youtube.com/@alhidayah.bukitkencana">Rekaman Kajian</a></li>
+
+  <li>
+    <a href="#">Belajar Bahasa Arab</a>
+    <button class="toggle">▼</button>
+    <div class="submenu">
+      <a href="https://ia601800.us.archive.org/14/items/eBook_Bhs_Arab_242/Panduan_Durusul_Lughah_al_Arabiyah_1.pdf">Durusul Lughah Jilid 1</a>
+      <a href="https://ia801206.us.archive.org/1/items/Kitab_Terjemahan/Panduan_Durusul_Lughah_al_Arabiyyah_4.pdf">Durusul Lughah Jilid 4</a>
+    </div>
+  </li>
+
+  <li><a href="https://alhidayahmsj.github.io/Live.masjidilharam/">Live Mekkah - Madinah</a></li>
+
+  <li>
+    <a href="#">Galeri Foto & Video</a>
+    <button class="toggle">▼</button>
+    <div class="submenu">
+      <a href="https://drive.google.com/drive/folders/1FCzaeXZ8eLlgArKoFJM2trA1L35Mar1G">Foto</a>
+      <a href="https://drive.google.com/drive/folders/1z1YnvwjZBNNIS2HYDSjhapydkBBqRzEt">Video</a>
+    </div>
+  </li>
+
+  <li>
+    <a href="#">Jadwal Sholat & Arah Kiblat</a>
+    <button class="toggle">▼</button>
+    <div class="submenu">
+      <a href="https://masjid.infinityfreeapp.com/alhidayah/jumat/khatib.php">Sholat Jumat</a>
+      <a href="https://masjid.infinityfreeapp.com/alhidayah/jumat/jadwal_alad.php">Jadwal Sholat</a>
+      <a href="kiblat-online.html">Arah Kiblat</a>
+    </div>
+  </li>
+</ul>
+</nav>
+
+<div class="slideshow">
+  <img src="masjid1.jpg" class="slide active">
+  <img src="masjid2.jpg" class="slide">
+  <img src="masjid3.jpg" class="slide">
+  <img src="masjid4.jpg" class="slide">
 </div>
 
-<div class="card" id="jadwal">Memuat jadwal sholat...</div>
+<div class="credit">
+Created By : Team Multi Media<br>
+Masjid Al Hidayah
+</div>
 
 <script>
-/* ===== JAM ANALOG ===== */
-function updateClock(){
-  const now=new Date();
+/* TOGGLE MENU */
+document.querySelectorAll(".toggle").forEach(btn=>{
+  btn.onclick=()=>{
+    const s=btn.nextElementSibling;
+    document.querySelectorAll(".submenu").forEach(x=>{
+      if(x!==s) x.classList.remove("show");
+    });
+    s.classList.toggle("show");
+    btn.textContent=s.classList.contains("show")?"▲":"▼";
+  };
+});
 
-  const sec=now.getSeconds();
-  const min=now.getMinutes();
-  const hr=now.getHours();
-
-  const secDeg=sec*6;
-  const minDeg=min*6;
-  const hrDeg=(hr%12)*30 + min*0.5;
-
-  document.getElementById("second").style.transform =
-    `translateX(-50%) rotate(${secDeg}deg)`;
-
-  document.getElementById("minute").style.transform =
-    `translateX(-50%) rotate(${minDeg}deg)`;
-
-  document.getElementById("hour").style.transform =
-    `translateX(-50%) rotate(${hrDeg}deg)`;
-}
-setInterval(updateClock,1000);
-updateClock();
-
-/* ===== JADWAL SHOLAT ===== */
-(async()=>{
-  const box=document.getElementById("jadwal");
-
-  const today=new Date();
-  today.setHours(0,0,0,0);
-  const todayISO=today.toISOString().split("T")[0];
-
-  try{
-    const cityID=1301;
-    const res=await fetch(
-      `https://api.myquran.com/v2/sholat/jadwal/${cityID}/${todayISO}`,
-      { cache:"no-store" }
-    );
-
-    if(!res.ok) throw "API ERROR";
-
-    const json=await res.json();
-    const j=json.data.jadwal;
-
-    box.innerHTML=`
-      <div class="row"><div class="label">Subuh</div><div class="time">${j.subuh}</div></div>
-      <div class="row"><div class="label">Dzuhur</div><div class="time">${j.dzuhur}</div></div>
-      <div class="row"><div class="label">Ashar</div><div class="time">${j.ashar}</div></div>
-      <div class="row"><div class="label">Maghrib</div><div class="time">${j.maghrib}</div></div>
-      <div class="row"><div class="label">Isya</div><div class="time">${j.isya}</div></div>
-    `;
-  }catch(e){
-    console.error(e);
-    box.innerHTML="<b>Jadwal sholat tidak tersedia</b>";
-  }
-})();
+/* SLIDESHOW */
+let i=0;
+const slides=document.querySelectorAll(".slide");
+setInterval(()=>{
+  slides[i].classList.remove("active");
+  i=(i+1)%slides.length;
+  slides[i].classList.add("active");
+},3000);
 </script>
 
 </body>
