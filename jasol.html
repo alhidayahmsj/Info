@@ -51,7 +51,7 @@ h3{font-weight:normal;color:#9affd2;margin-top:0}
   font-weight:bold;
 }
 
-/* jarak tiap angka */
+/* posisi angka */
 .n1{--deg:30deg}
 .n2{--deg:60deg}
 .n3{--deg:90deg}
@@ -100,12 +100,24 @@ h3{font-weight:normal;color:#9affd2;margin-top:0}
   grid-template-columns:1fr auto;
   padding:10px 0;
   border-bottom:1px solid rgba(255,255,255,.1);
-  text-align:left; /* 🔥 RATA KIRI */
+  text-align:left;
 }
 .row:last-child{border-bottom:none}
 
 .label{font-weight:bold}
 .time{font-weight:bold;color:#7dffcc;text-align:right}
+
+/* ===== AYAT ===== */
+.ayat{
+  margin-top:20px;
+  padding:15px;
+  background:#1A5917;
+  border-radius:12px;
+  font-size:.95rem;
+  line-height:1.6;
+  color:#eafff3;
+  box-shadow:0 0 10px rgba(0,0,0,.2);
+}
 </style>
 </head>
 
@@ -116,8 +128,6 @@ h3{font-weight:normal;color:#9affd2;margin-top:0}
 
 <!-- JAM -->
 <div class="clock">
-
-  <!-- ANGKA -->
   <div class="number n1"><span>1</span></div>
   <div class="number n2"><span>2</span></div>
   <div class="number n3"><span>3</span></div>
@@ -131,7 +141,6 @@ h3{font-weight:normal;color:#9affd2;margin-top:0}
   <div class="number n11"><span>11</span></div>
   <div class="number n12"><span>12</span></div>
 
-  <!-- JARUM -->
   <div class="hand hour" id="hour"></div>
   <div class="hand minute" id="minute"></div>
   <div class="hand second" id="second"></div>
@@ -140,11 +149,18 @@ h3{font-weight:normal;color:#9affd2;margin-top:0}
 
 <div class="card" id="jadwal">Memuat jadwal sholat...</div>
 
+<!-- AYAT DI SINI -->
+<div class="ayat">
+  Sesungguhnya sholat itu mencegah dari (perbuatan) keji dan mungkar.
+  Dan (ketahuilah) mengingat Allah (sholat) itu lebih besar
+  (keutamaannya dari ibadah yang lain). Allah mengetahui apa yang kamu kerjakan.
+  <br><br>
+  <b>(QS. Al-'Ankabut 29: Ayat 45)</b>
+</div>
+
 <script>
-/* ===== JAM ANALOG ===== */
 function updateClock(){
   const now=new Date();
-
   const sec=now.getSeconds();
   const min=now.getMinutes();
   const hr=now.getHours();
@@ -165,7 +181,6 @@ function updateClock(){
 setInterval(updateClock,1000);
 updateClock();
 
-/* ===== JADWAL SHOLAT ===== */
 (async()=>{
   const box=document.getElementById("jadwal");
 
@@ -176,11 +191,8 @@ updateClock();
   try{
     const cityID=1301;
     const res=await fetch(
-      `https://api.myquran.com/v2/sholat/jadwal/${cityID}/${todayISO}`,
-      { cache:"no-store" }
+      `https://api.myquran.com/v2/sholat/jadwal/${cityID}/${todayISO}`
     );
-
-    if(!res.ok) throw "API ERROR";
 
     const json=await res.json();
     const j=json.data.jadwal;
@@ -193,7 +205,6 @@ updateClock();
       <div class="row"><div class="label">Isya</div><div class="time">${j.isya}</div></div>
     `;
   }catch(e){
-    console.error(e);
     box.innerHTML="<b>Jadwal sholat tidak tersedia</b>";
   }
 })();
